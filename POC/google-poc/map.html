@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Geolocation API for current Location</title>
+  </head>
+  <body>
+   
+    <div class="box" hidden>
+        <div class="mic"  >
+            <img class="talkIcon" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Google_microphone_logo.png" onclick="tapToTalk()"/>
+        </div>
+		<form action="http://maps.google.com/maps" method="get" target="_blank">
+        <div class="view"><input type="text" name="daddr" id="talkText"/></div>
+			<input type="hidden" name="saddr" value="geo" />
+			<input type="submit" value="Get directions" />
+		</form>
+    </div>
+  </body>
+</html>

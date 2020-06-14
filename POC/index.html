@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+	<title>Voice Assistance</title> 
+	<body onload = "getLocation()">
+	
+	
+	<h1 style="text-align:center;">TechM Assistance</h1>
+    <style>
+        body{
+			background-image: url('/google-poc/gcp2.png');
+			background-repeat: no-repeat;
+			background-position: center;            
+			height: 900px;
+			background-size: cover;
+			
+
+		}
+        .box{
+            width: 300px;
+            height: auto;
+            margin:5vh auto 0;
+            text-align: center;
+            border:1px solid #ccc;
+            padding: 20px;
+            background: #fff;
+        }
+        .talkIcon{
+            width: 50px;
+            height: 70px;
+            border: 1px solid #000;
+            border-radius: 50%;
+            padding: 20px;
+            text-align: center;
+        }
+        .talkIcon:hover{background: #ccc; cursor: pointer}
+        #talkText{
+            width: 90%;
+            height: 30px;
+            font-size: 14px;
+            padding: 5px;
+            margin-top: 20px;
+        }
+        
+    </style>
+	<body>
+</head>
+
+<p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+//var chr_1=position.coords.latitude+","+position.coords.longitude; 
+function showPosition(position) {
+   // x.innerHTML="Latitude: " + position.coords.latitude + 
+    //"<br>Longitude: " + position.coords.longitude;
+	
+}
+
+</script>
+
+<script>
+
+      
+function tapToTalk() {
+    console.log('in else');
+	if($('#talkText').val().trim()!=''){
+		$('#talkText').val('');
+	}
+    window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+    let finalTranscript = '';
+    let recognition = new window.SpeechRecognition();
+
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 10;
+    recognition.continuous = true;
+
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+        let transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      document.getElementById('talkText').value = finalTranscript ;
+	  var str2 = finalTranscript;
+	  var str = document.getElementById('talkText').value;
+	  console.log('in voice',finalTranscript);
+	  if (str.includes("cal")) {
+		  console.log('in if');
+		  window.location.href='tel:8880559440';
+		console.log('in voice');
+		}else if(str.includes("navigate")) {
+		  console.log('in else');
+		  var str=$('#talkText').val();
+		  $('#talkText').val(str.replace("navigate to",""));
+		  document.getElementById('myform').submit();
+		  //window.location.href = "google-poc/map.html"
+		  
+		}else if(str.includes("music")) {
+		   //window.location.href = "google-poc/play.html"
+		   window.open('google-poc/play.html', '_blank');
+		  
+		}
+	  
+   }
+    recognition.start();}
+</script>
+   
+    <div class="box">
+        <div class="mic"  >
+            <img class="talkIcon" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Google_microphone_logo.png" onclick="tapToTalk()"/>
+        </div>
+		<form id="myform" action="http://maps.google.com/maps" method="get" target="_blank">
+			<div class="view"  >
+				<input type="text" value= 'Speak now....' style="text-align:center;" name="daddr" id="talkText"/>
+			</div>
+			<input type="hidden" name="saddr" value="geo" />
+		</form
+    </div>
+
+</body>
+</html>
